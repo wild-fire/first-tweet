@@ -9,9 +9,12 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     buftok (0.2.0)
+    commander (4.1.6)
+      highline (~> 1.6.11)
     equalizer (0.0.9)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    highline (1.6.21)
     http (0.6.1)
       http_parser.rb (~> 0.6.0)
     http_parser.rb (0.6.0)
@@ -43,4 +46,5 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  commander
   twitter
