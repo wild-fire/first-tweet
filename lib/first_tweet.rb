@@ -2,6 +2,7 @@ require 'yaml'
 require 'open-uri'
 require 'json'
 require 'twitter'
+require 'nokogiri'
 require 'active_support/all'
 
 class FirstTweet
@@ -37,8 +38,24 @@ class FirstTweet
         tweet = client.status tweet['status_id']
       rescue  JSON::ParserError => e
         tweet = nil
-        puts "Not valid JSON, waiting for ordering a new one"
-        sleep 60
+        puts "[WARN] Not valid JSON, trying to fetch from the HTML"
+        File.open('jsonerror.log', 'w') { |file| file.write(response) }
+        tweet_page = Nokogiri::HTML(response)
+        tweet_id = tweet_page.css('div#first-tweet-wrapper a')
+        if tweet_id.count > 0
+          tweet_id = tweet_id.first['href'].match(/\/[0-9]+$/)
+          if tweet_id[0]
+            tweet_id = tweet_id[0].gsub(/^\//, '')
+            puts puts "fetching #{tweet_id}"
+            tweet = client.status tweet_id
+          else
+            puts "[WARN] Not HTML either. We will wait"
+            sleep 60
+          end
+        else
+          puts "[WARN] Not HTML either. We will wait"
+          sleep 60
+        end
       end
     end
 
