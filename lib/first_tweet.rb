@@ -34,6 +34,12 @@ class FirstTweet
       response = response.readlines.join
       begin
         tweet = JSON.parse response
+
+        unless tweet['status_id']
+          puts "[WARN] First tweet for user #{username} not found. It may not exist"
+          return nil
+        end
+
         puts "fetching #{tweet['status_id']}"
         tweet = client.status tweet['status_id']
       rescue  JSON::ParserError => e

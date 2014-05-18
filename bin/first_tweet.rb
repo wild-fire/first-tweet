@@ -39,9 +39,12 @@ command :users do |c|
       users_file.each_line do |l|
         user_id, username, date = l.split("\t")
         tweet = FirstTweet.fetch(username)
-        puts "#{username}: #{tweet.text}"
-        output_file << "#{tweet.id}\t#{tweet.created_at}\t#{user_id}\t#{tweet.text}\n"
-        output_file.flush
+        if tweet
+          puts "#{username}: #{tweet.text}"
+          output_file << "#{tweet.id}\t#{tweet.created_at}\t#{user_id}\t#{tweet.text}\n"
+          output_file.flush
+          sleep 60
+        end
       end
     end
   end
