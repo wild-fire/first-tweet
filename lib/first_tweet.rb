@@ -20,6 +20,8 @@ class FirstTweet
 
   def self.fetch username
 
+    return nil if username.blank?
+
     tweet = nil
 
     while tweet.nil?
