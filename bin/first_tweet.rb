@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'commander/import'
-require 'lib/first_tweet'
+require_relative '../lib/first_tweet'
 
 program :version, '0.0.1'
 program :description, 'Returns the first tweet of the users passed as parameter'
