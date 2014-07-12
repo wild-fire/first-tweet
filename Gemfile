@@ -5,3 +5,4 @@ gem "twitter"
 gem 'activesupport'
 gem 'commander'
 gem 'nokogiri'
+gem 'stopwords-filter'
