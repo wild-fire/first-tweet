@@ -31,7 +31,7 @@ command :create do |c|
 <!DOCTYPE html>
   <html>
 <head>
-  <title>jQCloud Example</title>
+  <title>Twitter Cloud Tag</title>
   <link rel="stylesheet" type="text/css" href="jqcloud.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
   <script type="text/javascript" src="jqcloud.min.js"></script>
@@ -41,8 +41,14 @@ command :create do |c|
      */
     var word_array = [
 html
-    words.reject{|w,_| filter.stopword? w}.each do |word, count|
-      cloud_file << "       {text: '#{word.gsub("'", "\\'")}', weight: #{count}},\n"
+    words.reject do |w,count|
+      count == 1 ||
+        w == 'http' ||
+        filter.stopword?(w) ||
+        w.match(/^[0-9]+$/)
+
+    end.each do |word, count|
+      cloud_file << "       {text: '#{word}', weight: #{count}, link: 'https://twitter.com/search?q=#{word}'},\n"
     end
 
     cloud_file << <<-html
