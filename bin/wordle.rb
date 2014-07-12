@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'commander/import'
 require 'open-uri'
+require 'stopwords'
 
 program :version, '0.0.1'
 program :description, 'Creates a wordle like image from the texts on the tweets'
@@ -16,6 +17,7 @@ command :create do |c|
   c.action do |args, options|
     texts_file = File.open args.first
     cloud_file = File.open args[1]+ '/index.html', 'w'
+    filter = Stopwords::Snowball::Filter.new "en"
     words = {}
     texts_file.each_line do |line|
       line.match(/\w+/).to_a.each do |word|
@@ -39,7 +41,7 @@ command :create do |c|
      */
     var word_array = [
 html
-    words.each do |word, count|
+    words.reject{|w,_| filter.stopword? w}.each do |word, count|
       cloud_file << "       {text: '#{word.gsub("'", "\\'")}', weight: #{count}},\n"
     end
 
